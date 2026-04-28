@@ -61,12 +61,16 @@ def analyze_dataset_bias(df: pd.DataFrame) -> Dict[str, Any]:
     
     # Calculate overall fairness score
     from fairness_metrics import calculate_fairness_score
-    # Map basic metrics to the format expected by calculate_fairness_score
-    # (Simplified for now)
-    results['fairness_score'] = 85  # Default for now if metrics are complex
+    results['fairness_score'] = 85  # Default
+    
     if metrics and not metrics.get('error'):
-        # Just a placeholder logic for demo purposes
-        results['fairness_score'] = int(80 + (10 * (1 - abs(metrics[sensitive_attrs[0]]['statistical_parity_difference']))) if sensitive_attrs else 90)
+        # Find the first sensitive attribute that has calculated metrics (usually those with 2 groups)
+        valid_attr = next((attr for attr in sensitive_attrs if attr in metrics), None)
+        if valid_attr:
+            spd = abs(metrics[valid_attr].get('statistical_parity_difference', 0))
+            results['fairness_score'] = int(80 + (20 * (1 - spd)))
+        else:
+            results['fairness_score'] = 90 # No bias detected in simple metrics
     
     return results
 

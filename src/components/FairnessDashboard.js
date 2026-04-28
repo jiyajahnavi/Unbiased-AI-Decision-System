@@ -14,9 +14,10 @@ const FairnessDashboard = ({ results }) => {
   }
 
   const prepareDistData = () => {
-    if (!dataset?.distribution_analysis) return [];
+    if (!dataset?.distribution_analysis || Object.keys(dataset.distribution_analysis).length === 0) return [];
     const firstAttr = Object.keys(dataset.distribution_analysis)[0];
     const dist = dataset.distribution_analysis[firstAttr];
+    if (!dist) return [];
     return Object.entries(dist).map(([group, val]) => ({
       name: group,
       value: val * 100
