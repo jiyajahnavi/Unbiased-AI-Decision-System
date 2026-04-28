@@ -12,4 +12,5 @@ joblib==1.5.0
 xgboost==3.0.0
 lightgbm==4.6.0
 aif360==0.6.1
-fairlearn==0.10.0python-multipart
+fairlearn==0.10.0
+python-multipart
